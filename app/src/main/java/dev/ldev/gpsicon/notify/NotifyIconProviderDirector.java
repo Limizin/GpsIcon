@@ -13,9 +13,9 @@ public class NotifyIconProviderDirector {
     private static INotifyIconProvider _iconProvider;
     private Context _context;
 
-    public static void switchIconProvider(String iconProviderName){
-        _iconProviderName=iconProviderName;
-        _iconProvider=null;
+    public static void switchIconProvider(String iconProviderName) {
+        _iconProviderName = iconProviderName;
+        _iconProvider = null;
     }
 
     public NotifyIconProviderDirector(Context context) {
@@ -24,24 +24,24 @@ public class NotifyIconProviderDirector {
 
     public INotifyIconProvider getGpsIconManager() {
 
-        INotifyIconProvider iconProvider=_iconProvider;
+        INotifyIconProvider iconProvider = _iconProvider;
 
-        if (iconProvider==null){
-            if(_iconProviderName==null){
+        if (iconProvider == null) {
+            if (_iconProviderName == null) {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(_context);
-                String iconType = prefs.getString(C.NotifyIconTypeKey, NotifyIconTypes.Blink);
-                iconProvider=getIconProvider(iconType);
-            }else{
-                iconProvider=getIconProvider(_iconProviderName);
+                String iconType = prefs.getString(C.NOTIFY_ICON_TYPE_KEY, NotifyIconTypes.BLINK);
+                iconProvider = getIconProvider(iconType);
+            } else {
+                iconProvider = getIconProvider(_iconProviderName);
             }
-            _iconProvider=iconProvider;
+            _iconProvider = iconProvider;
         }
 
         return iconProvider;
     }
 
-    private INotifyIconProvider getIconProvider(String name){
-        if (name.equals(NotifyIconTypes.Bu)) {
+    private INotifyIconProvider getIconProvider(String name) {
+        if (name.equals(NotifyIconTypes.BU)) {
             return new BuNotifyIconProvider(_context);
         }
         return new BlinkNotifyIconProvider();

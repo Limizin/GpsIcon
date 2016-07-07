@@ -3,7 +3,7 @@ package dev.ldev.gpsicon.notify;
 
 public interface INotifyIconProvider {
 
-    public Integer getSearchIcon(int sattelitesCount);
+    int getSearchIcon(int sattelitesCount);
 
-    public Integer getFixIcon(int sattelitesCount);
+    int getFixIcon(int sattelitesCount);
 }

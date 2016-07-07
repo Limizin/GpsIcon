@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.GpsSatellite;
 
+import dev.ldev.gpsicon.R;
 import dev.ldev.gpsicon.ui.MainActivity;
 import dev.ldev.gpsicon.util.SatteliteUtils;
 
@@ -25,23 +26,23 @@ public class GpsStatusNotifier {
     private NotifyIconProviderDirector _notifyIconProvider;
 
     public GpsStatusNotifier(Context context, NotifyIconProviderDirector notifyIconProvider) {
-        this._context = context;
+        _context = context;
         _notifyIconProvider = notifyIconProvider;
         notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        searchStatus = String.format("GPS (%s)", getStringResourceByName("notif_search_status"));
-        searchFoundMsg = getStringResourceByName("notif_search_found");
-        fixStatus = String.format("GPS (%s)", getStringResourceByName("notif_fix_status"));
-        fixUsedMsg = getStringResourceByName("notif_fix_used");
+        searchStatus = String.format(_context.getString(R.string.notify_message_template), _context.getString(R.string.notif_search_status));
+        searchFoundMsg = _context.getString(R.string.notif_search_found);
+        fixStatus = String.format(_context.getString(R.string.notify_message_template), _context.getString(R.string.notif_fix_status));
+        fixUsedMsg = _context.getString(R.string.notif_fix_used);
     }
 
     public void showStartSearch() {
         _lastUsed = 0;
         _lastTotal = 0;
-        showSearch(null);
+        notifySatSearchEvent(null);
     }
 
-    public void showSearch(Iterable<GpsSatellite> sats) {
+    public void notifySatSearchEvent(Iterable<GpsSatellite> sats) {
 
         int used = SatteliteUtils.getFoundCount(sats);
         int total = SatteliteUtils.getTotalCount(sats);
@@ -63,7 +64,7 @@ public class GpsStatusNotifier {
         }
     }
 
-    public void showFix(Iterable<GpsSatellite> sats) {
+    public void notifySatFixEvent(Iterable<GpsSatellite> sats) {
         int used = SatteliteUtils.getFixedCount(sats);
         int total = SatteliteUtils.getTotalCount(sats);
 
@@ -89,7 +90,6 @@ public class GpsStatusNotifier {
         notificationManager.cancel(1);
     }
 
-
     private void showNotify(Notification notif) {
         notif.flags |= Notification.FLAG_ONGOING_EVENT;
         notif.flags |= Notification.FLAG_NO_CLEAR;
@@ -98,14 +98,8 @@ public class GpsStatusNotifier {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
         PendingIntent pIntent = PendingIntent.getActivity(_context, 0, intent, 0);
-        notif.contentIntent=pIntent;
+        notif.contentIntent = pIntent;
 
         notificationManager.notify(1, notif);
-    }
-
-    private String getStringResourceByName(String aString) {
-        String packageName = _context.getPackageName();
-        int resId = _context.getResources().getIdentifier(aString, "string", packageName);
-        return resId == 0 ? aString : _context.getResources().getString(resId);
     }
 }

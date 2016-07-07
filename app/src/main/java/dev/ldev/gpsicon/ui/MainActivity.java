@@ -7,7 +7,6 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.RadioButton;
 
-import dev.ldev.gpsicon.BuildConfig;
 import dev.ldev.gpsicon.C;
 import dev.ldev.gpsicon.R;
 import dev.ldev.gpsicon.notify.NotifyIconProviderDirector;
@@ -24,34 +23,34 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String iconType = prefs.getString(C.NotifyIconTypeKey, NotifyIconTypes.Blink);
+        String iconType = prefs.getString(C.NOTIFY_ICON_TYPE_KEY, NotifyIconTypes.BLINK);
         NotifyIconProviderDirector.switchIconProvider(iconType);
 
         _blinkIconRadio = (RadioButton) findViewById(R.id.blinkIconRadio);
-        if (iconType.equals(NotifyIconTypes.Blink))
+        if (iconType.equals(NotifyIconTypes.BLINK))
             _blinkIconRadio.setChecked(true);
         _buIconRadio = (RadioButton) findViewById(R.id.buIconRadio);
-        if (iconType.equals(NotifyIconTypes.Bu))
+        if (iconType.equals(NotifyIconTypes.BU))
             _buIconRadio.setChecked(true);
 
         _blinkIconRadio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switchNotifyIcon(NotifyIconTypes.Blink);
+                switchNotifyIcon(NotifyIconTypes.BLINK);
             }
         });
 
         _buIconRadio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switchNotifyIcon(NotifyIconTypes.Bu);
+                switchNotifyIcon(NotifyIconTypes.BU);
             }
         });
     }
 
     private void switchNotifyIcon(String targetIcon) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        prefs.edit().putString(C.NotifyIconTypeKey, targetIcon).apply();
+        prefs.edit().putString(C.NOTIFY_ICON_TYPE_KEY, targetIcon).apply();
         NotifyIconProviderDirector.switchIconProvider(targetIcon);
     }
 }

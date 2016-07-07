@@ -31,7 +31,7 @@ public final class SatteliteUtils {
         if (sats == null)
             return 0;
         int count = 0;
-        for (GpsSatellite sat : sats) {
+        for (GpsSatellite ignored : sats) {
             count++;
         }
         return count;
