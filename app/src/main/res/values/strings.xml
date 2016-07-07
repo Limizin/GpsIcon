@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Gps Icon</string>
+    <string name="notif_search_status">search</string>
+    <string name="notif_search_found">found</string>
+    <string name="notif_fix_status">fix</string>
+    <string name="notif_fix_used">used</string>
+    <string name="notify_icon_type_header">indicator type</string>
+    <string name="notify_icon_type_blink">blink indicator</string>
+    <string name="notify_icon_type_bu">digital indicator</string>
+</resources>

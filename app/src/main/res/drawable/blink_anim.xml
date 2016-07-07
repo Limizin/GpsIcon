@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:duration="300" android:drawable="@drawable/blink" />
+    <item android:duration="60" android:drawable="@drawable/blink_a" />
+    <item android:duration="100" android:drawable="@drawable/blink_d" />
+    <item android:duration="60" android:drawable="@drawable/blink_a" />
+</animation-list>

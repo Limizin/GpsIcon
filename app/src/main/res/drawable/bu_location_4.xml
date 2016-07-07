@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:duration="@integer/icon_animation_hide_time_ms" android:drawable="@drawable/bu_location" />
+    <item android:duration="@integer/icon_animation_transiotion_time_ms" android:drawable="@drawable/bu_location_4_a" />
+    <item android:duration="@integer/icon_animation_show_time_ms" android:drawable="@drawable/bu_location_4_d" />
+    <item android:duration="@integer/icon_animation_transiotion_time_ms" android:drawable="@drawable/bu_location_4_a" />
+</animation-list>

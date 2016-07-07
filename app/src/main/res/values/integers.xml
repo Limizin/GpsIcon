@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <integer name="icon_animation_hide_time_ms">100</integer>
+    <integer name="icon_animation_show_time_ms">300</integer>
+    <integer name="icon_animation_transiotion_time_ms">60</integer>
+
+
+</resources>

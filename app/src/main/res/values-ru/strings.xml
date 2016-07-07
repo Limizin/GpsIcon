@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Gps Icon</string>
+    <string name="notif_search_status">поиск</string>
+    <string name="notif_search_found">найдено</string>
+    <string name="notif_fix_status">фикс</string>
+    <string name="notif_fix_used">использует</string>
+    <string name="notify_icon_type_header">тип индикатора</string>
+    <string name="notify_icon_type_blink">мигающий индикатор</string>
+    <string name="notify_icon_type_bu">цифровой индикатор</string>
+</resources>
