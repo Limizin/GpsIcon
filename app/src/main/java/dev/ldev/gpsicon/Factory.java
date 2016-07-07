@@ -9,6 +9,7 @@ import dev.ldev.gpsicon.notify.BlinkNotifyIconProvider;
 import dev.ldev.gpsicon.notify.BuNotifyIconProvider;
 import dev.ldev.gpsicon.notify.GpsStatusNotifier;
 import dev.ldev.gpsicon.notify.INotifyIconProvider;
+import dev.ldev.gpsicon.notify.NotifyIconProviderDirector;
 import dev.ldev.gpsicon.notify.NotifyIconTypes;
 
 public final class Factory {
@@ -23,17 +24,7 @@ public final class Factory {
     }
 
     public GpsStatusNotifier getGpsStatusNotifier(Context context) {
-        return new GpsStatusNotifier(context, getGpsIconManager(context));
+        return new GpsStatusNotifier(context, new NotifyIconProviderDirector(context));
     }
 
-    public INotifyIconProvider getGpsIconManager(Context context) {
-
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        String iconType = prefs.getString(C.NotifyIconTypeKey, NotifyIconTypes.Blink);
-
-        if (iconType.equals(NotifyIconTypes.Bu)) {
-            return new BuNotifyIconProvider(context);
-        }
-        return new BlinkNotifyIconProvider();
-    }
 }

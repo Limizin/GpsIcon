@@ -14,6 +14,7 @@ import android.util.Log;
 
 import dev.ldev.gpsicon.Factory;
 import dev.ldev.gpsicon.notify.GpsStatusNotifier;
+import dev.ldev.gpsicon.notify.NotifyIconProviderDirector;
 
 public class GpsObserveService extends Service implements GpsStatus.Listener, LocationListener {
 
@@ -49,6 +50,7 @@ public class GpsObserveService extends Service implements GpsStatus.Listener, Lo
         _locationManager.removeGpsStatusListener(this);
         _locationManager.removeUpdates(this);
         notifier.hide();
+        NotifyIconProviderDirector.switchIconProvider(null);
         super.onDestroy();
     }
 

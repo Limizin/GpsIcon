@@ -4,12 +4,13 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.RadioButton;
 
+import dev.ldev.gpsicon.BuildConfig;
 import dev.ldev.gpsicon.C;
 import dev.ldev.gpsicon.R;
+import dev.ldev.gpsicon.notify.NotifyIconProviderDirector;
 import dev.ldev.gpsicon.notify.NotifyIconTypes;
 
 public class MainActivity extends Activity {
@@ -24,6 +25,7 @@ public class MainActivity extends Activity {
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String iconType = prefs.getString(C.NotifyIconTypeKey, NotifyIconTypes.Blink);
+        NotifyIconProviderDirector.switchIconProvider(iconType);
 
         _blinkIconRadio = (RadioButton) findViewById(R.id.blinkIconRadio);
         if (iconType.equals(NotifyIconTypes.Blink))
@@ -50,5 +52,6 @@ public class MainActivity extends Activity {
     private void switchNotifyIcon(String targetIcon) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         prefs.edit().putString(C.NotifyIconTypeKey, targetIcon).apply();
+        NotifyIconProviderDirector.switchIconProvider(targetIcon);
     }
 }

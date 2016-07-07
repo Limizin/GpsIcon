@@ -2,10 +2,12 @@ package dev.ldev.gpsicon.notify;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.location.GpsSatellite;
 
-import dev.ldev.gpsicon.R;
+import dev.ldev.gpsicon.ui.MainActivity;
 import dev.ldev.gpsicon.util.SatteliteUtils;
 
 
@@ -20,17 +22,17 @@ public class GpsStatusNotifier {
     private int _lastUsed;
     private int _lastTotal;
 
-    private INotifyIconProvider _notifyIconProvider;
+    private NotifyIconProviderDirector _notifyIconProvider;
 
-    public GpsStatusNotifier(Context context, INotifyIconProvider notifyIconProvider) {
+    public GpsStatusNotifier(Context context, NotifyIconProviderDirector notifyIconProvider) {
         this._context = context;
         _notifyIconProvider = notifyIconProvider;
         notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        searchStatus = String.format("GPS (%s)", context.getString(R.string.notif_search_status));
-        searchFoundMsg = context.getString(R.string.notif_search_found);
-        fixStatus = String.format("GPS (%s)", context.getString(R.string.notif_fix_status));
-        fixUsedMsg = context.getString(R.string.notif_fix_used);
+        searchStatus = String.format("GPS (%s)", getStringResourceByName("notif_search_status"));
+        searchFoundMsg = getStringResourceByName("notif_search_found");
+        fixStatus = String.format("GPS (%s)", getStringResourceByName("notif_fix_status"));
+        fixUsedMsg = getStringResourceByName("notif_fix_used");
     }
 
     public void showStartSearch() {
@@ -46,7 +48,7 @@ public class GpsStatusNotifier {
 
         if (total == 0 || used != _lastUsed || total != _lastTotal) {
 
-            Integer animId = _notifyIconProvider.getSearchIcon(used);
+            Integer animId = _notifyIconProvider.getGpsIconManager().getSearchIcon(used);
 
             Notification notif = new Notification(animId, null,
                     System.currentTimeMillis());
@@ -67,7 +69,7 @@ public class GpsStatusNotifier {
 
         if (total == 0 || used != _lastUsed || total != _lastTotal) {
 
-            Integer animId = _notifyIconProvider.getFixIcon(used);
+            Integer animId = _notifyIconProvider.getGpsIconManager().getFixIcon(used);
 
             Notification notif = new Notification(animId, null,
                     System.currentTimeMillis());
@@ -91,6 +93,19 @@ public class GpsStatusNotifier {
     private void showNotify(Notification notif) {
         notif.flags |= Notification.FLAG_ONGOING_EVENT;
         notif.flags |= Notification.FLAG_NO_CLEAR;
+
+        Intent intent = new Intent(_context, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+        PendingIntent pIntent = PendingIntent.getActivity(_context, 0, intent, 0);
+        notif.contentIntent=pIntent;
+
         notificationManager.notify(1, notif);
+    }
+
+    private String getStringResourceByName(String aString) {
+        String packageName = _context.getPackageName();
+        int resId = _context.getResources().getIdentifier(aString, "string", packageName);
+        return resId == 0 ? aString : _context.getResources().getString(resId);
     }
 }
