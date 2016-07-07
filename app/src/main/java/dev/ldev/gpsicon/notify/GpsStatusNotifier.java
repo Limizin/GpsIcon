@@ -96,8 +96,9 @@ public class GpsStatusNotifier {
 
         Intent intent = new Intent(_context, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.putExtra(MainActivity.QUICK_SWITCH, true);
 
-        PendingIntent pIntent = PendingIntent.getActivity(_context, 0, intent, 0);
+        PendingIntent pIntent = PendingIntent.getActivity(_context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         notif.contentIntent = pIntent;
 
         notificationManager.notify(1, notif);
