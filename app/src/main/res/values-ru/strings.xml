@@ -7,4 +7,5 @@
     <string name="notify_icon_type_header">тип индикатора</string>
     <string name="notify_icon_type_blink">мигающий индикатор</string>
     <string name="notify_icon_type_bu">цифровой индикатор</string>
+    <string name="notify_message_template">GPS (%s)</string>
 </resources>
