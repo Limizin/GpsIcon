@@ -20,9 +20,8 @@ import dev.ldev.gpsicon.services.GpsObserveService;
 
 public class MainActivity extends Activity {
 
-    private final static String TAG="main";
-    public final static String QUICK_SWITCH ="quick_swicth";
-
+    public final static String QUICK_SWITCH = "quick_swicth";
+    private final static String TAG = "main";
     private RadioButton _blinkIconRadio;
     private RadioButton _buIconRadio;
     private boolean _quickSwitch;
@@ -32,9 +31,9 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent intent=getIntent();
-        _quickSwitch=intent.getBooleanExtra(QUICK_SWITCH, false);
-        Log.d(TAG, "quick switch: "+String.valueOf(_quickSwitch));
+        Intent intent = getIntent();
+        _quickSwitch = intent.getBooleanExtra(QUICK_SWITCH, false);
+        Log.d(TAG, "quick switch: " + String.valueOf(_quickSwitch));
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String iconType = prefs.getString(C.NOTIFY_ICON_TYPE_KEY, NotifyIconTypes.BLINK);
@@ -51,7 +50,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View view) {
                 switchNotifyIcon(NotifyIconTypes.BLINK);
-                if(_quickSwitch)
+                if (_quickSwitch)
                     finish();
             }
         });
@@ -60,7 +59,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View view) {
                 switchNotifyIcon(NotifyIconTypes.BU);
-                if(_quickSwitch)
+                if (_quickSwitch)
                     finish();
             }
         });
@@ -79,11 +78,6 @@ public class MainActivity extends Activity {
             Toast.makeText(this, e.getMessage(),
                     Toast.LENGTH_LONG).show();
         }
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
     }
 
     private void switchNotifyIcon(String targetIcon) {

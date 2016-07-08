@@ -4,11 +4,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
-import android.nfc.Tag;
 import android.util.Log;
 import android.widget.Toast;
 
-import dev.ldev.gpsicon.BuildConfig;
 import dev.ldev.gpsicon.services.GpsObserveService;
 
 public class BootReceiver extends BroadcastReceiver {

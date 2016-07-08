@@ -13,13 +13,13 @@ public class NotifyIconProviderDirector {
     private static INotifyIconProvider _iconProvider;
     private Context _context;
 
+    public NotifyIconProviderDirector(Context context) {
+        _context = context;
+    }
+
     public static void switchIconProvider(String iconProviderName) {
         _iconProviderName = iconProviderName;
         _iconProvider = null;
-    }
-
-    public NotifyIconProviderDirector(Context context) {
-        _context = context;
     }
 
     public INotifyIconProvider getGpsIconManager() {

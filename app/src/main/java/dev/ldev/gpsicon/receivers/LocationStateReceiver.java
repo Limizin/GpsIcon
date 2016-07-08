@@ -7,7 +7,6 @@ import android.location.LocationManager;
 import android.util.Log;
 import android.widget.Toast;
 
-import dev.ldev.gpsicon.BuildConfig;
 import dev.ldev.gpsicon.Factory;
 import dev.ldev.gpsicon.notify.GpsStatusNotifier;
 import dev.ldev.gpsicon.services.GpsObserveService;

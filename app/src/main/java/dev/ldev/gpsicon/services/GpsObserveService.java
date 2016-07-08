@@ -19,7 +19,7 @@ import dev.ldev.gpsicon.notify.NotifyIconProviderDirector;
 
 public class GpsObserveService extends Service implements GpsStatus.Listener, LocationListener {
 
-    private final static String TAG="GpsObserveService";
+    private final static String TAG = "GpsObserveService";
 
     private LocationManager _locationManager;
     private GpsStatusNotifier notifier;
@@ -70,7 +70,7 @@ public class GpsObserveService extends Service implements GpsStatus.Listener, Lo
 
         switch (event) {
             case GpsStatus.GPS_EVENT_STARTED:
-                if(BuildConfig.DEBUG)
+                if (BuildConfig.DEBUG)
                     Log.v(TAG, "GpsStatus.GPS_EVENT_STARTED");
 
                 isGpsFixed = false;
@@ -78,7 +78,7 @@ public class GpsObserveService extends Service implements GpsStatus.Listener, Lo
                 notifier.showStartSearch();
                 break;
             case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
-                if(BuildConfig.DEBUG)
+                if (BuildConfig.DEBUG)
                     Log.v(TAG, "GpsStatus.GPS_EVENT_SATELLITE_STATUS");
 
                 GpsStatus status = _locationManager.getGpsStatus(null);
@@ -93,25 +93,25 @@ public class GpsObserveService extends Service implements GpsStatus.Listener, Lo
                     }
 
                     if (usedSattelites < 3) {
-                        if(BuildConfig.DEBUG)
+                        if (BuildConfig.DEBUG)
                             Log.d(TAG, "fix is lost. restart search");
 
                         isGpsFixed = false;
                         _isSearchSattelites = true;
                         notifier.showStartSearch();
                     } else {
-                        if(BuildConfig.DEBUG)
+                        if (BuildConfig.DEBUG)
                             Log.d(TAG, String.format("fix. %d sattelites", usedSattelites));
                         notifier.notifySatFixEvent(sats);
                     }
                 } else {
-                    if(BuildConfig.DEBUG)
+                    if (BuildConfig.DEBUG)
                         Log.d(TAG, "no fix. continue");
                     notifier.notifySatSearchEvent(sats);
                 }
                 break;
             case GpsStatus.GPS_EVENT_STOPPED:
-                if(BuildConfig.DEBUG)
+                if (BuildConfig.DEBUG)
                     Log.v(TAG, "GpsStatus.GPS_EVENT_STOPPED");
 
                 isGpsFixed = false;
@@ -125,12 +125,12 @@ public class GpsObserveService extends Service implements GpsStatus.Listener, Lo
 
     @Override
     public void onLocationChanged(Location location) {
-        if(BuildConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.v(TAG, "onLocationChanged");
         String provider = location.getProvider();
 
         if (provider.equals("gps") && !isGpsFixed) {
-            if(BuildConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "FIX");
             isGpsFixed = true;
             _isSearchSattelites = false;

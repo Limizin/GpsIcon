@@ -2,13 +2,13 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 17
-    buildToolsVersion "23.0.2"
+    buildToolsVersion "24"
     defaultConfig {
         applicationId "dev.ldev.gpsicon"
         minSdkVersion 17
-        targetSdkVersion 23
-        versionCode 3
-        versionName '1.1'
+        targetSdkVersion 22
+        versionCode 4
+        versionName '1.2'
     }
     buildTypes {
         release {
