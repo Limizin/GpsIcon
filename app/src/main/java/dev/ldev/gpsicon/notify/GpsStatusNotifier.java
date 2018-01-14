@@ -51,12 +51,14 @@ public class GpsStatusNotifier {
 
             Integer animId = _notifyIconProvider.getGpsIconManager().getSearchIcon(used);
 
-            Notification notif = new Notification(animId, null,
-                    System.currentTimeMillis());
-
             String msg = searchFoundMsg + ": " + used + "/" + total;
-            notif.setLatestEventInfo(_context, searchStatus,
-                    msg, null);
+
+            Notification.Builder builder = new Notification.Builder(_context);
+            builder.setContentTitle(fixStatus);
+            builder.setContentText(msg);
+            builder.setSmallIcon(animId);
+            Notification notif = builder.build();
+
             showNotify(notif);
 
             _lastUsed = used;
@@ -72,13 +74,14 @@ public class GpsStatusNotifier {
 
             Integer animId = _notifyIconProvider.getGpsIconManager().getFixIcon(used);
 
-            Notification notif = new Notification(animId, null,
-                    System.currentTimeMillis());
-
-
             String msg = fixUsedMsg + ": " + used + "/" + total;
-            notif.setLatestEventInfo(_context, fixStatus,
-                    msg, null);
+
+            Notification.Builder builder = new Notification.Builder(_context);
+            builder.setContentTitle(fixStatus);
+            builder.setContentText(msg);
+            builder.setSmallIcon(animId);
+            Notification notif = builder.build();
+
             showNotify(notif);
 
             _lastUsed = used;

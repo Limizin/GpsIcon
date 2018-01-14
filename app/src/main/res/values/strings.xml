@@ -8,4 +8,5 @@
     <string name="notify_icon_type_blink">blink indicator</string>
     <string name="notify_icon_type_bu">digital indicator</string>
     <string name="notify_message_template">GPS (%s)</string>
+    <string name="location_perm_request">This app needs a location permission</string>
 </resources>
