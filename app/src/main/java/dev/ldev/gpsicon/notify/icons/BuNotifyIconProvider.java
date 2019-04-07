@@ -1,7 +1,9 @@
-package dev.ldev.gpsicon.notify;
+package dev.ldev.gpsicon.notify.icons;
 
 
 import android.content.Context;
+
+import dev.ldev.gpsicon.R;
 
 public class BuNotifyIconProvider implements INotifyIconProvider {
 
@@ -21,6 +23,16 @@ public class BuNotifyIconProvider implements INotifyIconProvider {
 
     public int getFixIcon(int sattelitesCount) {
         return getIconResId(sattelitesCount, "_d");
+    }
+
+    @Override
+    public int getNetworkLocationEnabledIcon() {
+        return R.drawable.network_location_enabled;
+    }
+
+    @Override
+    public int getGpsLocationEnabledIcon() {
+        return R.drawable.gps_location_enabled;
     }
 
     private int getIconResId(int sattelitesCount, String iconTypeModifier) {

@@ -1,26 +1,28 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 17
-    buildToolsVersion "24"
+    compileSdkVersion 26
     defaultConfig {
         applicationId "dev.ldev.gpsicon"
-        minSdkVersion 17
-        targetSdkVersion 22
-        versionCode 4
-        versionName '1.2'
+        minSdkVersion 19
+        targetSdkVersion 26
+        versionCode 7
+        versionName '1.4.2'
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
     productFlavors {
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    testCompile 'junit:junit:4.12'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
 }

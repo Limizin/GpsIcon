@@ -8,4 +8,8 @@
     <string name="notify_icon_type_blink">blink indicator</string>
     <string name="notify_icon_type_bu">digital indicator</string>
     <string name="notify_message_template">GPS (%s)</string>
+    <string name="show_gps_location_state">show gps location state</string>
+    <string name="show_network_location_state">show network location state</string>
+    <string name="gps_location_active">gps location active</string>
+    <string name="network_location_active">network location active</string>
 </resources>

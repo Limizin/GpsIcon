@@ -14,15 +14,14 @@ import android.util.Log;
 
 import dev.ldev.gpsicon.BuildConfig;
 import dev.ldev.gpsicon.Factory;
-import dev.ldev.gpsicon.notify.GpsStatusNotifier;
-import dev.ldev.gpsicon.notify.NotifyIconProviderDirector;
+import dev.ldev.gpsicon.notify.Notifier;
 
 public class GpsObserveService extends Service implements GpsStatus.Listener, LocationListener {
 
-    private final static String TAG = "GpsObserveService";
+    private final static String TAG = ":::GpsObserveService";
 
     private LocationManager _locationManager;
-    private GpsStatusNotifier notifier;
+    private Notifier notifier;
     private boolean _isSearchSattelites = false;
     private boolean isGpsFixed = false;
 
@@ -36,7 +35,7 @@ public class GpsObserveService extends Service implements GpsStatus.Listener, Lo
         _locationManager.addGpsStatusListener(this);
         _locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 0L, 0.0f, this);
 
-        notifier = Factory.getInstance().getGpsStatusNotifier(getBaseContext());
+        notifier = Factory.getInstance().getNotifier(getBaseContext());
         super.onCreate();
     }
 
@@ -44,7 +43,7 @@ public class GpsObserveService extends Service implements GpsStatus.Listener, Lo
     public int onStartCommand(Intent intent, int flags, int startId) {
         //return super.onStartCommand(intent, flags, startId);
 
-        notifier.hide(); //clear probably pending notification
+        notifier.updateLocationState(); //clear probably pending notification
         return START_STICKY;
     }
 
@@ -54,8 +53,7 @@ public class GpsObserveService extends Service implements GpsStatus.Listener, Lo
         Log.i(TAG, "destroy");
         _locationManager.removeGpsStatusListener(this);
         _locationManager.removeUpdates(this);
-        notifier.hide();
-        NotifyIconProviderDirector.switchIconProvider(null);
+        notifier.finishGpsSearch();
         super.onDestroy();
     }
 
@@ -65,6 +63,7 @@ public class GpsObserveService extends Service implements GpsStatus.Listener, Lo
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
+    @SuppressWarnings("MissingPermission")
     @Override
     public void onGpsStatusChanged(int event) {
 
@@ -75,7 +74,7 @@ public class GpsObserveService extends Service implements GpsStatus.Listener, Lo
 
                 isGpsFixed = false;
                 _isSearchSattelites = true;
-                notifier.showStartSearch();
+                notifier.notifyStartGpsSearch();
                 break;
             case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
                 if (BuildConfig.DEBUG)
@@ -98,7 +97,7 @@ public class GpsObserveService extends Service implements GpsStatus.Listener, Lo
 
                         isGpsFixed = false;
                         _isSearchSattelites = true;
-                        notifier.showStartSearch();
+                        notifier.notifyStartGpsSearch();
                     } else {
                         if (BuildConfig.DEBUG)
                             Log.d(TAG, String.format("fix. %d sattelites", usedSattelites));
@@ -117,7 +116,7 @@ public class GpsObserveService extends Service implements GpsStatus.Listener, Lo
                 isGpsFixed = false;
                 _isSearchSattelites = false;
 
-                notifier.hide();
+                notifier.finishGpsSearch();
 
                 break;
         }

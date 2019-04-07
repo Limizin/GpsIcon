@@ -8,31 +8,39 @@ import android.util.Log;
 import android.widget.Toast;
 
 import dev.ldev.gpsicon.Factory;
-import dev.ldev.gpsicon.notify.GpsStatusNotifier;
+import dev.ldev.gpsicon.notify.Notifier;
 import dev.ldev.gpsicon.services.GpsObserveService;
 
 
 public class LocationStateReceiver extends BroadcastReceiver {
 
-    private final static String TAG = "LocationStateReceiver";
+    private final static String TAG = ":::LocationState";
 
     @Override
     public void onReceive(Context context, Intent intent) {
         try {
+
+            String action = intent.getAction();
+            if (action == null || !action.equals("android.location.PROVIDERS_CHANGED"))
+                return;
+
             Log.d(TAG, "location state change event received");
 
             LocationManager locationManager = (LocationManager) context
                     .getSystemService(Context.LOCATION_SERVICE);
 
+            if (locationManager == null)
+                return;
+
+            Notifier notifier = Factory.getInstance().getNotifier(context);
+
             if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                 context.startService(new Intent(context, GpsObserveService.class));
             } else {
                 context.stopService(new Intent(context, GpsObserveService.class));
-
-                //close pending icon if proccess was DIRTY killed
-                GpsStatusNotifier notifier = Factory.getInstance().getGpsStatusNotifier(context);
-                notifier.hide();
             }
+
+            notifier.updateLocationState();
         } catch (Exception e) {
             Log.e(TAG, "start gps icon service error", e);
             Toast.makeText(context, e.getMessage(),
