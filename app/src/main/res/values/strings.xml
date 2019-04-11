@@ -12,4 +12,5 @@
     <string name="show_network_location_state">show network location state</string>
     <string name="gps_location_active">gps location active</string>
     <string name="network_location_active">network location active</string>
+    <string name="location_perm_request">This app needs a location permission</string>
 </resources>

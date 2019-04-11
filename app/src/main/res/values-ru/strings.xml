@@ -12,4 +12,5 @@
     <string name="show_network_location_state">иконка геоданных (network)</string>
     <string name="gps_location_active">gps-геоданные включены</string>
     <string name="network_location_active">network-геоданные включены</string>
+    <string name="location_perm_request">Приложению необходимо разрешение</string>
 </resources>

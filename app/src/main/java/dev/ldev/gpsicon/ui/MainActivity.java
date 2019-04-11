@@ -20,6 +20,7 @@ import dev.ldev.gpsicon.R;
 import dev.ldev.gpsicon.notify.Notifier;
 import dev.ldev.gpsicon.notify.icons.NotifyIconSetNames;
 import dev.ldev.gpsicon.services.GpsObserveService;
+import dev.ldev.gpsicon.services.ServiceStarter;
 
 public class MainActivity extends Activity {
 
@@ -96,27 +97,7 @@ public class MainActivity extends Activity {
     }
 
     private void startServiceIfNeed() {
-        try {
-            LocationManager locationManager = (LocationManager) this
-                    .getSystemService(Context.LOCATION_SERVICE);
-
-            if (locationManager == null)
-                return;
-
-            Notifier notifier = Factory.getInstance().getNotifier(this);
-
-            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                this.startService(new Intent(this, GpsObserveService.class));
-            } else {
-                this.stopService(new Intent(this, GpsObserveService.class));
-            }
-
-            notifier.updateLocationState();
-        } catch (Exception e) {
-            Log.e(TAG, "start gps icon service error", e);
-            Toast.makeText(this, e.getMessage(),
-                    Toast.LENGTH_LONG).show();
-        }
+        ServiceStarter.Create(this).startServiceIfNeed();
     }
 
     private void switchNotifyIcon(String targetIcon) {

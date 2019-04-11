@@ -2,6 +2,7 @@ package dev.ldev.gpsicon.notify;
 
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -10,7 +11,6 @@ import android.content.SharedPreferences;
 import android.location.GpsSatellite;
 import android.location.LocationManager;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import dev.ldev.gpsicon.C;
 import dev.ldev.gpsicon.R;
@@ -49,6 +49,11 @@ public class Notifier implements SharedPreferences.OnSharedPreferenceChangeListe
         fixUsedMsg = _context.getString(R.string.notif_fix_used);
 
         notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel notificationChannel = new NotificationChannel(C.NOTIFY_CHANNEL, C.NOTIFY_CHANNEL, importance);
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
 
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         prefs.registerOnSharedPreferenceChangeListener(this);
@@ -98,7 +103,7 @@ public class Notifier implements SharedPreferences.OnSharedPreferenceChangeListe
 
         if (total == 0 || used != _lastUsed || total != _lastTotal) {
 
-            Integer animId = _iconProvider.getSearchIcon(used);
+            int animId = _iconProvider.getSearchIcon(used);
             String msg = searchFoundMsg + ": " + used + "/" + total;
             showNotify(animId, searchStatus, msg);
 
@@ -113,7 +118,7 @@ public class Notifier implements SharedPreferences.OnSharedPreferenceChangeListe
 
         if (total == 0 || used != _lastUsed || total != _lastTotal) {
 
-            Integer animId = _iconProvider.getFixIcon(used);
+            int animId = _iconProvider.getFixIcon(used);
 
             String msg = fixUsedMsg + ": " + used + "/" + total;
             showNotify(animId, fixStatus, msg);
@@ -162,6 +167,9 @@ public class Notifier implements SharedPreferences.OnSharedPreferenceChangeListe
 
     private void showNotify(int iconId, String title, String message) {
         Notification.Builder builder = new Notification.Builder(_context);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            builder.setChannelId(C.NOTIFY_CHANNEL);
+        }
         builder.setContentTitle(title);
         builder.setContentText(message);
         builder.setSmallIcon(iconId);

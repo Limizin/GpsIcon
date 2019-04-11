@@ -10,6 +10,7 @@ import android.widget.Toast;
 import dev.ldev.gpsicon.Factory;
 import dev.ldev.gpsicon.notify.Notifier;
 import dev.ldev.gpsicon.services.GpsObserveService;
+import dev.ldev.gpsicon.services.ServiceStarter;
 
 
 public class LocationStateReceiver extends BroadcastReceiver {
@@ -18,35 +19,13 @@ public class LocationStateReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        try {
+        String action = intent.getAction();
+        if (action == null || !action.equals("android.location.PROVIDERS_CHANGED"))
+            return;
 
-            String action = intent.getAction();
-            if (action == null || !action.equals("android.location.PROVIDERS_CHANGED"))
-                return;
+        Log.d(TAG, "location state change event received");
 
-            Log.d(TAG, "location state change event received");
-
-            LocationManager locationManager = (LocationManager) context
-                    .getSystemService(Context.LOCATION_SERVICE);
-
-            if (locationManager == null)
-                return;
-
-            Notifier notifier = Factory.getInstance().getNotifier(context);
-
-            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                context.startService(new Intent(context, GpsObserveService.class));
-            } else {
-                context.stopService(new Intent(context, GpsObserveService.class));
-            }
-
-            notifier.updateLocationState();
-        } catch (Exception e) {
-            Log.e(TAG, "start gps icon service error", e);
-            Toast.makeText(context, e.getMessage(),
-                    Toast.LENGTH_LONG).show();
-            context.stopService(new Intent(context, GpsObserveService.class));
-        }
+        ServiceStarter.Create(context).startServiceIfNeed();
     }
 
 
