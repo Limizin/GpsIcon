@@ -2,7 +2,6 @@ package dev.ldev.gpsicon.util.permissions;
 
 
 import android.app.Notification;
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
@@ -76,11 +75,6 @@ public class PermissionHelper {
                 );
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel notificationChannel = new NotificationChannel(Const.NOTIFY_PERMISSION_CHANNEL, Const.NOTIFY_PERMISSION_CHANNEL, importance);
-            notificationManager.createNotificationChannel(notificationChannel);
-        }
         Notification.Builder builder = new Notification.Builder(context)
                 .setSmallIcon(notificationIcon)
                 .setContentTitle(notificationTitle)
@@ -91,9 +85,6 @@ public class PermissionHelper {
                 .setWhen(0)
                 .setContentIntent(permPendingIntent)
                 .setStyle(null);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            builder.setChannelId(Const.NOTIFY_PERMISSION_CHANNEL);
-        }
 
         notificationManager.notify(requestCode, builder.build());
     }

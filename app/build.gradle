@@ -1,13 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 23
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "dev.ldev.gpsicon"
-        minSdkVersion 19
-        targetSdkVersion 27
-        versionCode 8
-        versionName '1.4.3'
+        minSdkVersion 23
+        targetSdkVersion 23
+        versionCode 9
+        versionName '1.4.5'
     }
     buildTypes {
         release {
@@ -17,9 +18,8 @@ android {
     }
     productFlavors {
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+    lintOptions {
+        checkReleaseBuilds false
     }
 }
 
