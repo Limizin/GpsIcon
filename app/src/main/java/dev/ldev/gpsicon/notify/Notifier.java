@@ -2,6 +2,7 @@ package dev.ldev.gpsicon.notify;
 
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -9,6 +10,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.GpsSatellite;
 import android.location.LocationManager;
+import android.os.Build;
 import android.preference.PreferenceManager;
 
 import dev.ldev.gpsicon.C;
@@ -33,11 +35,13 @@ public class Notifier implements SharedPreferences.OnSharedPreferenceChangeListe
     private boolean _networkLocationEnabled;
     private boolean _gpsLocationEnabled;
     private boolean _isGpsWorkActive;
-    private NotificationManager notificationManager;
+    private final NotificationManager notificationManager;
     private INotifyIconProvider _iconProvider;
-    private Context _context;
+    private final Context _context;
     private int _lastUsed;
     private int _lastTotal;
+
+    private String _channelId = null;
 
     public Notifier(Context context) {
         _context = context;
@@ -160,7 +164,8 @@ public class Notifier implements SharedPreferences.OnSharedPreferenceChangeListe
 
 
     private void showNotify(int iconId, String title, String message) {
-        Notification.Builder builder = new Notification.Builder(_context);
+        String channelId = initChannel();
+        Notification.Builder builder = new Notification.Builder(_context, channelId);
         builder.setContentTitle(title);
         builder.setContentText(message);
         builder.setSmallIcon(iconId);
@@ -178,9 +183,21 @@ public class Notifier implements SharedPreferences.OnSharedPreferenceChangeListe
         notificationManager.notify(1, notif);
     }
 
+    public String initChannel(){
+        if(_channelId==null){
+            String CHANNEL_ID = C.NOTIFY_CHANNEL;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
+                    "service",
+                    NotificationManager.IMPORTANCE_LOW);
+
+            ((NotificationManager) _context.getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(channel);
+            _channelId = CHANNEL_ID;
+        }
+        return _channelId;
+    }
+
     private void hideNotification() {
         //Log.v(TAG, "hide notifictaion");
         notificationManager.cancel(1);
     }
-
 }

@@ -12,6 +12,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.ResultReceiver;
 
+import dev.ldev.gpsicon.Factory;
+
 /**
  * Provides helper methods to request permissions from components other than Activities.
  */
@@ -75,7 +77,9 @@ public class PermissionHelper {
                 );
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        Notification.Builder builder = new Notification.Builder(context)
+        String channel = Factory.getInstance().getNotifier(context).initChannel();
+
+        Notification.Builder builder = new Notification.Builder(context, channel)
                 .setSmallIcon(notificationIcon)
                 .setContentTitle(notificationTitle)
                 .setContentText(notificationText)

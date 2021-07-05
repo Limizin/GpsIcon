@@ -71,17 +71,7 @@ public class MainActivity extends Activity {
         CheckBox _showGpsLocationState = (CheckBox) findViewById(R.id.showGpsLocationState);
         _showNetworkLocationState = (CheckBox) findViewById(R.id.showNetworkLocationState);
 
-        boolean showGpsLocationState = prefs.getBoolean(C.SHOW_GPS_LOCATION_STATE, false);
-        _showGpsLocationState.setChecked(showGpsLocationState);
-        _showGpsLocationState.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                prefs.edit().putBoolean(C.SHOW_GPS_LOCATION_STATE, b).apply();
-                if (!b)
-                    _showNetworkLocationState.setChecked(false);
-                _showNetworkLocationState.setEnabled(b);
-            }
-        });
+        prefs.edit().putBoolean(C.SHOW_GPS_LOCATION_STATE, true).apply();
 
         boolean showNetworkLocationState = prefs.getBoolean(C.SHOW_NETWORK_LOCATION_STATE, false);
         _showNetworkLocationState.setChecked(showNetworkLocationState);
@@ -104,4 +94,6 @@ public class MainActivity extends Activity {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         prefs.edit().putString(C.NOTIFY_ICON_TYPE_KEY, targetIcon).apply();
     }
+
+
 }

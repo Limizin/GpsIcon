@@ -1,5 +1,8 @@
 package dev.ldev.gpsicon.services;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -8,14 +11,18 @@ import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
 import dev.ldev.gpsicon.BuildConfig;
 import dev.ldev.gpsicon.Factory;
+import dev.ldev.gpsicon.R;
 import dev.ldev.gpsicon.notify.Notifier;
+import dev.ldev.gpsicon.util.SatteliteUtils;
 
+@SuppressWarnings("deprecation")
 public class GpsObserveService extends Service implements GpsStatus.Listener, LocationListener {
 
     private final static String TAG = ":::GpsObserveService";
@@ -29,19 +36,28 @@ public class GpsObserveService extends Service implements GpsStatus.Listener, Lo
     @Override
     public void onCreate() {
         Log.i(TAG, "create");
+        super.onCreate();
+        notifier = Factory.getInstance().getNotifier(getBaseContext());
+        String channel = notifier.initChannel();
+        Notification notification = new Notification.Builder(this, channel)
+                .setContentTitle("")
+                .setContentText("")
+                .setColor(1)
+                .setSmallIcon(R.drawable.blink).build();
+
+        startForeground(1, notification);
         _locationManager = (LocationManager) getBaseContext()
                 .getSystemService(Context.LOCATION_SERVICE);
 
+        assert _locationManager != null;
         _locationManager.addGpsStatusListener(this);
         _locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 0L, 0.0f, this);
-
-        notifier = Factory.getInstance().getNotifier(getBaseContext());
-        super.onCreate();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         //return super.onStartCommand(intent, flags, startId);
+
 
         notifier.updateLocationState(); //clear probably pending notification
         return START_STICKY;
@@ -81,6 +97,7 @@ public class GpsObserveService extends Service implements GpsStatus.Listener, Lo
                     Log.v(TAG, "GpsStatus.GPS_EVENT_SATELLITE_STATUS");
 
                 GpsStatus status = _locationManager.getGpsStatus(null);
+                assert status != null;
                 Iterable<GpsSatellite> sats = status.getSatellites();
 
                 if (!_isSearchSattelites) {
@@ -104,8 +121,11 @@ public class GpsObserveService extends Service implements GpsStatus.Listener, Lo
                         notifier.notifySatFixEvent(sats);
                     }
                 } else {
-                    if (BuildConfig.DEBUG)
-                        Log.d(TAG, "no fix. continue");
+                    if (BuildConfig.DEBUG) {
+                        int used = SatteliteUtils.getFoundCount(sats);
+                        int total = SatteliteUtils.getTotalCount(sats);
+                        Log.d(TAG, String.format("no fix. continue %d/%d", used, total));
+                    }
                     notifier.notifySatSearchEvent(sats);
                 }
                 break;
@@ -124,9 +144,9 @@ public class GpsObserveService extends Service implements GpsStatus.Listener, Lo
 
     @Override
     public void onLocationChanged(Location location) {
-        if (BuildConfig.DEBUG)
-            Log.v(TAG, "onLocationChanged");
         String provider = location.getProvider();
+        if (BuildConfig.DEBUG)
+            Log.v(TAG, "onLocationChanged: "+provider);
 
         if (provider.equals("gps") && !isGpsFixed) {
             if (BuildConfig.DEBUG)
@@ -148,5 +168,6 @@ public class GpsObserveService extends Service implements GpsStatus.Listener, Lo
     @Override
     public void onProviderDisabled(String s) {
     }
+
 
 }
